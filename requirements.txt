@@ -1,0 +1,4 @@
+nnunetv2 @ git+https://github.com/LeTruongVu2k1/Customized-nnUNet.git
+SimpleITK
+pydicom
+pytorch-fid
