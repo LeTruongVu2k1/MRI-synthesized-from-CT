@@ -1,0 +1,103 @@
+
+#######################################################################
+Please cite the following paper when using nnU-Net:
+Isensee, F., Jaeger, P. F., Kohl, S. A., Petersen, J., & Maier-Hein, K. H. (2021). nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature methods, 18(2), 203-211.
+#######################################################################
+ 
+
+This is the configuration used by this training:
+Configuration name: 2d
+ {'data_identifier': 'nnUNetPlans_2d', 'preprocessor_name': 'DefaultPreprocessor', 'batch_size': 23, 'patch_size': [256, 192], 'median_image_size_in_voxels': [251.5, 186.0], 'spacing': [1.0, 1.0], 'normalization_schemes': ['ZScoreNormalization'], 'use_mask_for_norm': [True], 'UNet_class_name': 'PlainConvUNet', 'UNet_base_num_features': 32, 'n_conv_per_stage_encoder': [2, 2, 2, 2, 2, 2], 'n_conv_per_stage_decoder': [2, 2, 2, 2, 2], 'num_pool_per_axis': [5, 5], 'pool_op_kernel_sizes': [[1, 1], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2]], 'conv_kernel_sizes': [[3, 3], [3, 3], [3, 3], [3, 3], [3, 3], [3, 3]], 'unet_max_num_features': 512, 'resampling_fn_data': 'resample_data_or_seg_to_shape', 'resampling_fn_seg': 'resample_data_or_seg_to_shape', 'resampling_fn_data_kwargs': {'is_seg': False, 'order': 3, 'order_z': 0, 'force_separate_z': None}, 'resampling_fn_seg_kwargs': {'is_seg': True, 'order': 1, 'order_z': 0, 'force_separate_z': None}, 'resampling_fn_probabilities': 'resample_data_or_seg_to_shape', 'resampling_fn_probabilities_kwargs': {'is_seg': False, 'order': 1, 'order_z': 0, 'force_separate_z': None}, 'batch_dice': True} 
+ 
+These are the global plan.json settings:
+ {'dataset_name': 'Dataset001_Liver', 'plans_name': 'nnUNetPlans', 'original_median_spacing_after_transp': [1.0, 1.0, 1.0], 'original_median_shape_after_transp': [30, 252, 186], 'image_reader_writer': 'SimpleITKIO', 'transpose_forward': [0, 1, 2], 'transpose_backward': [0, 1, 2], 'experiment_planner_used': 'ExperimentPlanner', 'label_manager': 'LabelManager', 'foreground_intensity_properties_per_channel': {'0': {'max': 1.0, 'mean': 0.2606104910373688, 'median': 0.24769647419452667, 'min': 0.0, 'percentile_00_5': 0.06384892016649246, 'percentile_99_5': 0.6531020402908325, 'std': 0.0987810268998146}}} 
+ 
+2023-05-02 17:43:36.027274: unpacking dataset... 
+2023-05-02 17:45:12.903304: unpacking done... 
+2023-05-02 17:45:15.112666: do_dummy_2d_data_aug: False 
+2023-05-02 17:45:17.644439: Using splits from existing split file: drive/MyDrive/nnUNet/nnUNet_preprocessed/Dataset001_Liver/splits_final.json 
+2023-05-02 17:45:20.425406: The split file contains 5 splits. 
+2023-05-02 17:45:22.534173: Desired fold for training: 3 
+2023-05-02 17:45:25.522577: This split has 13 training and 3 validation cases. 
+2023-05-02 17:45:58.230874: Unable to plot network architecture: 
+2023-05-02 17:46:00.308352: No module named 'hiddenlayer' 
+2023-05-02 17:46:05.555942:  
+2023-05-02 17:46:07.448450: Epoch 90 
+2023-05-02 17:46:10.087108: Current learning rate: 0.00126 
+2023-05-02 17:49:38.003859: train_loss -0.9804 
+2023-05-02 17:49:39.991948: val_loss -0.8702 
+2023-05-02 17:49:41.917589: Pseudo dice [0.933] 
+2023-05-02 17:49:44.939928: Epoch time: 212.45 s 
+2023-05-02 17:49:54.633033:  
+2023-05-02 17:49:56.767341: Epoch 91 
+2023-05-02 17:49:59.466820: Current learning rate: 0.00115 
+2023-05-02 17:52:16.503023: train_loss -0.9808 
+2023-05-02 17:52:18.348488: val_loss -0.8724 
+2023-05-02 17:52:20.523715: Pseudo dice [0.934] 
+2023-05-02 17:52:22.391313: Epoch time: 141.87 s 
+2023-05-02 17:52:30.496853:  
+2023-05-02 17:52:32.610274: Epoch 92 
+2023-05-02 17:52:34.709839: Current learning rate: 0.00103 
+2023-05-02 17:54:51.301208: train_loss -0.9803 
+2023-05-02 17:54:53.598418: val_loss -0.8752 
+2023-05-02 17:54:55.544486: Pseudo dice [0.9371] 
+2023-05-02 17:54:57.400485: Epoch time: 140.81 s 
+2023-05-02 17:55:05.239252:  
+2023-05-02 17:55:07.097256: Epoch 93 
+2023-05-02 17:55:09.520289: Current learning rate: 0.00091 
+2023-05-02 17:57:27.941250: train_loss -0.9811 
+2023-05-02 17:57:29.827861: val_loss -0.8769 
+2023-05-02 17:57:31.743969: Pseudo dice [0.936] 
+2023-05-02 17:57:33.887046: Epoch time: 142.7 s 
+2023-05-02 17:57:40.880852:  
+2023-05-02 17:57:42.666123: Epoch 94 
+2023-05-02 17:57:44.539941: Current learning rate: 0.00079 
+2023-05-02 18:00:02.223026: train_loss -0.9807 
+2023-05-02 18:00:04.488005: val_loss -0.8767 
+2023-05-02 18:00:07.353028: Pseudo dice [0.936] 
+2023-05-02 18:00:09.506176: Epoch time: 141.34 s 
+2023-05-02 18:00:16.515012:  
+2023-05-02 18:00:18.593598: Epoch 95 
+2023-05-02 18:00:20.730248: Current learning rate: 0.00067 
+2023-05-02 18:02:39.860567: train_loss -0.9807 
+2023-05-02 18:02:42.928481: val_loss -0.8692 
+2023-05-02 18:02:45.623060: Pseudo dice [0.9334] 
+2023-05-02 18:02:47.763499: Epoch time: 143.35 s 
+2023-05-02 18:02:54.748642:  
+2023-05-02 18:02:56.993740: Epoch 96 
+2023-05-02 18:02:59.189877: Current learning rate: 0.00055 
+2023-05-02 18:05:15.944394: train_loss -0.9811 
+2023-05-02 18:05:18.078409: val_loss -0.8717 
+2023-05-02 18:05:20.246120: Pseudo dice [0.9334] 
+2023-05-02 18:05:24.717146: Epoch time: 141.2 s 
+2023-05-02 18:05:33.495601:  
+2023-05-02 18:05:35.622252: Epoch 97 
+2023-05-02 18:05:38.605011: Current learning rate: 0.00043 
+2023-05-02 18:07:54.806861: train_loss -0.9811 
+2023-05-02 18:07:56.982819: val_loss -0.876 
+2023-05-02 18:07:59.552451: Pseudo dice [0.9363] 
+2023-05-02 18:08:01.736150: Epoch time: 141.31 s 
+2023-05-02 18:08:08.830040:  
+2023-05-02 18:08:10.752388: Epoch 98 
+2023-05-02 18:08:12.795546: Current learning rate: 0.0003 
+2023-05-02 18:10:28.899971: train_loss -0.981 
+2023-05-02 18:10:31.581994: val_loss -0.8752 
+2023-05-02 18:10:33.665259: Pseudo dice [0.9356] 
+2023-05-02 18:10:35.619128: Epoch time: 140.07 s 
+2023-05-02 18:10:42.514210:  
+2023-05-02 18:10:44.435658: Epoch 99 
+2023-05-02 18:10:47.480809: Current learning rate: 0.00016 
+2023-05-02 18:13:01.993219: train_loss -0.9813 
+2023-05-02 18:13:04.121090: val_loss -0.8742 
+2023-05-02 18:13:07.307469: Pseudo dice [0.9366] 
+2023-05-02 18:13:09.476467: Epoch time: 139.48 s 
+2023-05-02 18:13:25.975432: Training done. 
+2023-05-02 18:13:28.695619: Using splits from existing split file: drive/MyDrive/nnUNet/nnUNet_preprocessed/Dataset001_Liver/splits_final.json 
+2023-05-02 18:13:33.323796: The split file contains 5 splits. 
+2023-05-02 18:13:35.235266: Desired fold for training: 3 
+2023-05-02 18:13:38.253125: This split has 13 training and 3 validation cases. 
+2023-05-02 18:13:40.407008: predicting 13 
+2023-05-02 18:13:45.459080: predicting 20 
+2023-05-02 18:13:51.405668: predicting 33 
+2023-05-02 18:14:48.781878: Validation complete 
+2023-05-02 18:14:50.938033: Mean Validation Dice:  0.9313551699302639 

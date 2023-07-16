@@ -104,8 +104,8 @@ def train(args):
     
     # nnUNet_download() # prepare nnUNet-segmentation model for inferencing downstream task on MR-synthesis images
     # Setting environment path for nnUNet
-    os.environ['nnUNet_raw'] = f'{args.nnUNet_dir}/nnUNet_raw'
-    os.environ['nnUNet_preprocessed'] = f'{args.nnUNet_dir}/nnUNet_preprocessed'
+    # os.environ['nnUNet_raw'] = f'{args.nnUNet_dir}/nnUNet_raw'
+    # os.environ['nnUNet_preprocessed'] = f'{args.nnUNet_dir}/nnUNet_preprocessed'
     os.environ['nnUNet_results'] = f'{args.nnUNet_dir}/nnUNet_results'
     
     # Getting t2 and ct images for calculating FID score
@@ -358,7 +358,7 @@ if __name__ == '__main__':
     parser.add_argument('-model_dir', type=str, default='drive/MyDrive/tarGAN_saved_models', help="Path for saving model")
     parser.add_argument('-auto_delete_model', action='store_true', help="Deleting previous model if you stored it on Drive")
     
-    parser.add_argument('-nnUNet_dir', type=str, default='another_drive/MyDrive/nnUNet', help='folder which stores nnUNet stuff')
+    parser.add_argument('-nnUNet_dir', type=str, default='./MRI synthesis from CT', help='folder which stores nnUNet stuff')
     # parser.add_argument('-nnUNet_raw', type=str, default='another_drive/MyDrive/nnUNet/nnUNet_raw', help='environment path for nnUNet')
     # parser.add_argument('-nnUNet_preprocessed', type=str, default='another_drive/MyDrive/nnUNet/nnUNet_preprocessed', help='environment path for nnUNet')
     # parser.add_argument('-nnUNet_results', type=str, default='another_drive/MyDrive/nnUNet/nnUNet_results', help='environment path for nnUNet')

@@ -121,7 +121,73 @@ class Customized_CHAOS(Dataset):
 
     def __len__(self):
         return min(len(self.t2_path), len(self.ct_path))
+    
 
+class CHAOS_inference(Dataset):
+    def __init__(self, path="CHAOS_preprocessed_v2", modal='ct'):
+        super(CHAOS_inference, self).__init__()
+        assert modal == 'ct'
+        
+        
+        ####### Read CT #######
+        ct_img_path = sorted(glob.glob(f'{path}/**/DICOM_anon/*.dcm*', recursive=True))
+        ct_label_path = sorted(glob.glob(f'{path}/**/Ground/*.png*', recursive=True))
+
+        assert len(ct_img_path) == len(ct_label_path)
+        assert len(ct_img_path) != 0
+        
+        self.ct_path = [[img, label] for img, label in zip(ct_img_path, ct_label_path)]
+        
+        print("modal:{}, total ct size: {}".format(modal, len(self.ct_path)))
+
+    def __getitem__(self, idx):
+
+        ######### Get CT #########
+        ct_img, ct_seg_mask = self.ct_path[idx][0], self.ct_path[idx][1]
+        ct_img_name, ct_seg_make_name = ct_img.split('/')[-1].split('.')[0], ct_seg_mask.split('/')[-1].split('.')[0]
+        
+        dcm = pydicom.dcmread(ct_img)
+        wc = dcm.WindowCenter[0]
+        ww = dcm.WindowWidth[0]
+        slope = dcm.RescaleSlope
+        intersept = dcm.RescaleIntercept
+        low = wc - ww // 2
+        high = wc + ww // 2
+        img = dcm.pixel_array * slope + intersept
+        img[img < low] = low
+        img[img > high] = high
+        img = (img - low) / (high - low)
+        shape= img.copy()
+        shape[shape != 0] = 1
+
+        ct_img, ct_shape_mask = img, shape
+
+        ct_seg_mask = sitk.ReadImage(ct_seg_mask)
+        ct_seg_mask = sitk.GetArrayFromImage(ct_seg_mask)
+        data = ct_seg_mask.astype(dtype=int)
+        new_seg = np.zeros(data.shape, data.dtype)
+        new_seg[data != 0] = 1
+        ct_seg_mask = new_seg
+
+        ######### Some preprocessing steps #########
+        if ct_img.shape[0] != 256:
+            ct_img = cv2.resize(ct_img, (256, 256), interpolation=cv2.INTER_LINEAR)
+            ct_seg_mask = cv2.resize(ct_seg_mask, (256, 256), interpolation=cv2.INTER_NEAREST)
+            ct_shape_mask = cv2.resize(ct_shape_mask, (256, 256), interpolation=cv2.INTER_NEAREST)
+
+        ct_t_img = ct_img * ct_seg_mask
+
+        #  scale to [-1,1]
+        ct_img = (ct_img - 0.5) / 0.5
+        ct_t_img = (ct_t_img - 0.5) / 0.5
+
+        return (torch.from_numpy(ct_img).type(torch.FloatTensor).unsqueeze(dim=0), 
+                torch.from_numpy(ct_seg_mask).type(torch.LongTensor).unsqueeze(dim=0),
+                ct_img_name, 
+                ct_seg_make_name)
+
+    def __len__(self):
+        return len(self.ct_path)
     
     
 def raw_preprocess(data, get_s=False):
