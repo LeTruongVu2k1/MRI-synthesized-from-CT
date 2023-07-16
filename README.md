@@ -4,7 +4,7 @@ This is my proposed model on translating abdominal slices from CT modality to T2
 
 I evaluate my model's performance based on (1) [FID-score](https://arxiv.org/abs/1706.08500) and (2) [DICE](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient) score on downstream segmentation task when augmenting the training data with the MRI synthesised by my model.
 
-On downstream segmentation task (2), I use [nnUNet](https://github.com/MIC-DKFZ/nnUNet/tree/master) to segment liver on MR slices.
+On downstream segmentation task (2), I use [nnUNet](https://github.com/MIC-DKFZ/nnUNet/tree/master) to segment liver on MR slices. For preproducing the results, I will soon updated the code and the instruction (if you don't know) for training nnUNet.
 
 <p align="center">
 <img width="500" alt="model" src="images/cycle_consistency_structure.png">
@@ -34,7 +34,9 @@ Then, you need to create a folder structure like this:
     │   ├── t2
     │   │   ├──6
     │   │   ├──...(patient index)
-    
+
+To make life easier, the code for preprocessing will soon updated.  
+
 ## Installation
 ```bash
 git clone ...
