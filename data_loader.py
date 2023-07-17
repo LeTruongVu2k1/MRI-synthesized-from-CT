@@ -33,7 +33,7 @@ class Customized_CHAOS(Dataset):
 
         self.new_perm()
 
-        print("modal:{}, fold:{}, total size: t2: {}, ct: {}".format(modals,split,len(self.t2_path), len(self.ct_path)))
+        print("modal: {}, fold: {}, total size: t2: {}, ct: {}".format(modals,split,len(self.t2_path), len(self.ct_path)))
 
     def new_perm(self):
         x, y = len(self.t2_path), len(self.ct_path)
@@ -138,7 +138,7 @@ class CHAOS_inference(Dataset):
         
         self.ct_path = [[img, label] for img, label in zip(ct_img_path, ct_label_path)]
         
-        print("modal:{}, total ct size: {}".format(modal, len(self.ct_path)))
+        print("modal: {}, total ct size: {}".format(modal, len(self.ct_path)))
 
     def __getitem__(self, idx):
 

@@ -2,6 +2,7 @@ from models import Generator, Discriminator
 from data_loader import Customized_CHAOS
 from losses import *
 from utils import *
+import zipfile
 
 import torch
 from torch.utils.data import DataLoader
@@ -12,6 +13,7 @@ import glob
 from tqdm import tqdm
 import argparse
 import copy
+import gdown
 
 def train(args):
     glr = args.glr
@@ -106,6 +108,13 @@ def train(args):
     # Setting environment path for nnUNet
     # os.environ['nnUNet_raw'] = f'{args.nnUNet_dir}/nnUNet_raw'
     # os.environ['nnUNet_preprocessed'] = f'{args.nnUNet_dir}/nnUNet_preprocessed'
+    url = 'https://drive.google.com/uc?export=download&id=10ViY8pdE1WO139TWONeyZQpbOkNMT4Qy'
+    output = 'nnUNet_results.zip'
+    gdown.download(url, output, quiet=False)
+    
+    with zipfile.ZipFile('nnUNet_results.zip', 'r') as zip_ref:
+        zip_ref.extractall(args.nnUNet_dir)
+        
     os.environ['nnUNet_results'] = f'{args.nnUNet_dir}/nnUNet_results'
     
     # Getting t2 and ct images for calculating FID score
@@ -355,10 +364,10 @@ if __name__ == '__main__':
     
     parser.add_argument('-dataset_path', type=str, default='CHAOS_preprocessed_v2', help="CHAOS dataset's training path")
     
-    parser.add_argument('-model_dir', type=str, default='drive/MyDrive/tarGAN_saved_models', help="Path for saving model")
+    parser.add_argument('-model_dir', type=str, default='MRI-synthesized-from-CT/nnUNet', help="Path for saving model")
     parser.add_argument('-auto_delete_model', action='store_true', help="Deleting previous model if you stored it on Drive")
     
-    parser.add_argument('-nnUNet_dir', type=str, default='./MRI synthesis from CT', help='folder which stores nnUNet stuff')
+    parser.add_argument('-nnUNet_dir', type=str, default='MRI-synthesized-from-CT/nnUNet', help='folder which stores nnUNet stuff')
     # parser.add_argument('-nnUNet_raw', type=str, default='another_drive/MyDrive/nnUNet/nnUNet_raw', help='environment path for nnUNet')
     # parser.add_argument('-nnUNet_preprocessed', type=str, default='another_drive/MyDrive/nnUNet/nnUNet_preprocessed', help='environment path for nnUNet')
     # parser.add_argument('-nnUNet_results', type=str, default='another_drive/MyDrive/nnUNet/nnUNet_results', help='environment path for nnUNet')

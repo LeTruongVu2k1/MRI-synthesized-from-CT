@@ -9,6 +9,8 @@ import glob
 import numpy as np
 import torch
 import shutil
+import gdown
+import zipfile
 
 # Downstream task - nnUNet segmentation
 def nnUNet_predict(input_name, output_name, device):
@@ -51,6 +53,17 @@ def store_prediction(ct_img, ct_seg_mask, ct_img_name, ct_seg_mask_name, t2_fake
 #         nib.save(nii_file, f'{prediction_path}/{i+idx}_0000.nii.gz')
         
 def inference_and_segmentation(args):
+    # Downloading checkpoint
+    if args.checkpoint.split('/')[-1] == '19.6_saved_models_24576.pt':
+        url = 'https://drive.google.com/uc?export=download&id=1Z67wViOh3khnEvkaxaUdsd_Uup_VJadL'
+        output = '19.6_saved_models_24576.pt'
+        gdown.download(url, output, quiet=False)
+
+        with zipfile.ZipFile('19.6_saved_models_24576.pt', 'r') as zip_ref:
+            checkpoints_dir = '/'.join(args.checkpoint.split('/')[:-1])
+            zip_ref.extractall(checkpoints_dir)
+    
+    # Loading dataset
     dataset = CHAOS_inference(path=args.path, modal='ct')
     dataloader = DataLoader(dataset, batch_size=16, shuffle=True)
 
@@ -59,15 +72,15 @@ def inference_and_segmentation(args):
     checkpoint = torch.load(checkpoint, map_location='cpu')
     gen = load_gen(checkpoint, args.device)
 
-    # MR-synthesizing and segmenting
-    prediction_path = args.prediction_path
-    segmentation_path = args.segmentation_path
-    ct_npy_path = args.ct_npy_path
-
     # Remove already exists dir
-    parent_dir = '/'.join(prediction_path.split('/')[:-1])
+    parent_dir = args.save_dir
     if os.path.exists(parent_dir):
         shutil.rmtree(parent_dir)
+        
+    # MR-synthesizing and segmenting
+    prediction_path = os.path.join(parent_dir, 'synthesized_MRI')
+    segmentation_path = os.path.join(parent_dir, 'segmentations')
+    ct_npy_path = os.path.join(parent_dir, 'ct_npy_path')
 
     os.makedirs(prediction_path)
     os.makedirs(segmentation_path)
@@ -92,13 +105,14 @@ def inference_and_segmentation(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     
-    parser.add_argument('-path', type=str, default='MRI synthesis from CT/ct', help="Folder contains data for inferencing")
-    parser.add_argument('-checkpoint', type=str, default='MRI synthesis from CT/checkpoints/19.6_saved_models_24576.pt', help="Pretrained model for inferencing")
-    parser.add_argument('-ct_npy_path', type=str, default='MRI synthesis from CT/inference/ct_npy_path', help="Folder contains .npy ct images after extracting from DICOM format")
-    parser.add_argument('-prediction_path', type=str, default='MRI synthesis from CT/inference/synthesized_MRI', help="Folder contains predictions")
-    parser.add_argument('-segmentation_path', type=str, default='MRI synthesis from CT/inference/segmentations', help="Folder contains segmentations")
-    parser.add_argument('-nnUNet_dir', type=str, default='./MRI synthesis from CT', help='folder which stores nnUNet stuff')
+    parser.add_argument('-path', type=str, default='MRI-synthesized-from-CT/ct', help="Folder contains data for inferencing")
+    parser.add_argument('-checkpoint', type=str, default='MRI-synthesized-from-CT/checkpoints/19.6_saved_models_24576.pt', help="Pretrained model for inferencing")
+    # parser.add_argument('-ct_npy_path', type=str, default='MRI-synthesized-from-CT/inference/ct_npy_path', help="Folder contains .npy ct images after extracting from DICOM format")
+    # parser.add_argument('-prediction_path', type=str, default='MRI-synthesized-from-CT/inference/synthesized_MRI', help="Folder contains predictions")
+    # parser.add_argument('-segmentation_path', type=str, default='MRI-synthesized-from-CT/inference/segmentations', help="Folder contains segmentations")
+    parser.add_argument('-nnUNet_dir', type=str, default='./MRI-synthesized-from-CT/nnUNet', help='folder which stores nnUNet stuff')
     parser.add_argument('-device', type=str, default='cuda', help='device when using nnUNet')
+    parser.add_argument('-save_dir', type=str, default='MRI-synthesized-from-CT/inference', help="Directory contains predictions and segmentations")
     
     args = parser.parse_args()
     
