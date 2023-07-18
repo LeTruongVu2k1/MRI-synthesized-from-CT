@@ -76,7 +76,7 @@ Run this script to synthesize MRI from your CT:
 
 ```bash
 python MRI-synthesized-from-CT/inference.py -path <path_to_ct_input_file> \
-                                            -save_dir <folder_contain_results> |
+                                            -save_dir <folder_contain_results> \
                                             -nnUNet_dir <path_to_nnUNet_folder>
 ```
 
