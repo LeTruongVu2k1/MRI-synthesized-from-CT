@@ -1,6 +1,6 @@
 # T2w-MR synthesizing based on CT 
 
-This is my proposed model on translating abdominal slices from CT modality to T2w modality. This implementation is based on my research - *MR-synthesizing from CT using unpaired dataset*.
+This is my proposed model on translating abdominal slices from CT modality to T2w modality. This implementation is based on my research - *MR image generation from CT image on unpaired data*.
 
 I evaluate my model's performance based on (1) [FID-score](https://arxiv.org/abs/1706.08500) and (2) [DICE](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient) score on downstream segmentation task when augmenting the training data with the MRI synthesised by my model.
 
